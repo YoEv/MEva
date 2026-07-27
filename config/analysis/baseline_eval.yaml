@@ -1,0 +1,5 @@
+# Rescaling / correlation baselines (exp12 evaluation style).
+methods:
+  - "quantile_map"
+  - "linear_regression"
+label_mode: "clean"

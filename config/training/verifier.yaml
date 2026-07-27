@@ -1,0 +1,4 @@
+config_name: "stable"
+batch_size: 16
+num_workers: 6
+epochs: 10

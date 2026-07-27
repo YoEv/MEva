@@ -1,0 +1,102 @@
+gpu_parallel:
+  enabled: true
+  apply_to_small_scale: false
+  max_concurrent_jobs: 8
+  gpu_ids: []  # empty means auto-detect all visible GPUs
+  detection:
+    min_free_memory_mb: 60000
+    max_utilization_pct: 35
+    probe_interval_sec: 20
+
+execution:
+  include_scopes:
+    - "large_scale_single"
+    - "large_scale_merged"
+  prepare_splits: false
+  with_aesthetics: false
+  skip_feature_extract: true
+
+# Per-dataset feature-extraction flags.  The parallel runner forwards these
+# into ``run_musiceval_14_experiments.py`` which appends them to the entropy,
+# loss, and SAE extractor commands.
+#
+#   max_audio_sec   : hard cap on the audio duration (0 = unlimited).
+#   chunk_sec       : non-overlapping window length; 0 disables chunking.
+#   pool_to_frames  : uniformly mean-pool the concatenated per-clip features to
+#                      this many frames along time (used with chunk_sec > 0).
+#
+# Design:
+#   MusicPref   -> existing 30-s clips (no chunk, cap to 30 s).
+#   AIME        -> extractors honour the per-row (begin_s, end_s) 10-s window
+#                  from the CSV; set a 10-s safety cap.
+#   MusicArena  -> per-row (begin_s, end_s) covers up to 180 s; chunk to 30-s
+#                  windows and pool to 1500 frames so the CNN input is fixed.
+#   SongEval    -> full song (2-6 min); chunk to 30-s windows, pool to 1500.
+#   MusicEval   -> short baseline clips, use defaults (batched path).
+#   all_5_datasets -> no feature extraction here; reuses features from single
+#                  runs.
+datasets:
+  large_scale_single:
+    - name: "musicpref"
+      enabled: true
+      extract_flags:
+        max_audio_sec: 30.0
+      splits:
+        clean:
+          train: "features/loss/musicpref/clean/split_train.csv"
+          val: "features/loss/musicpref/clean/split_val.csv"
+          test: "features/loss/musicpref/clean/split_test.csv"
+
+    - name: "aime"
+      enabled: true
+      extract_flags:
+        max_audio_sec: 10.0
+      splits:
+        clean:
+          train: "features/loss/aime/clean/split_train.csv"
+          val: "features/loss/aime/clean/split_val.csv"
+          test: "features/loss/aime/clean/split_test.csv"
+
+    - name: "songeval"
+      enabled: true
+      extract_flags:
+        chunk_sec: 30.0
+        pool_to_frames: 1500
+        max_audio_sec: 360.0
+      splits:
+        clean:
+          train: "features/loss/songeval/clean/split_train.csv"
+          val: "features/loss/songeval/clean/split_val.csv"
+          test: "features/loss/songeval/clean/split_test.csv"
+
+    - name: "musiceval"
+      enabled: false  # small-scale runner handles MusicEval separately
+      extract_flags: {}
+      splits:
+        clean:
+          train: "features/loss/musiceval/clean/split_train.csv"
+          val: "features/loss/musiceval/clean/split_val.csv"
+          test: "features/loss/musiceval/clean/split_test.csv"
+
+    - name: "music_arena"
+      enabled: true
+      gpus_per_job: 2
+      extract_flags:
+        chunk_sec: 30.0
+        pool_to_frames: 1500
+        max_audio_sec: 180.0
+      splits:
+        clean:
+          train: "features/loss/music_arena/clean/split_train.csv"
+          val: "features/loss/music_arena/clean/split_val.csv"
+          test: "features/loss/music_arena/clean/split_test.csv"
+
+  large_scale_merged:
+    - name: "all_5_datasets"
+      enabled: true
+      extract_flags: {}
+      splits:
+        clean:
+          train: "data/full_splits/all_5_datasets/train.csv"
+          val: "data/full_splits/all_5_datasets/val.csv"
+          test: "data/full_splits/all_5_datasets/test.csv"

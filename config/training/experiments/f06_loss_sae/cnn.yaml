@@ -1,0 +1,28 @@
+experiment_family_id: "f06"
+experiment_family_name: "loss_sae"
+backbone: "cnn"
+
+legacy_script_key: "train_hybrid_cnn"
+
+data:
+  manifest_columns_required:
+    - "score"
+    - "audio_path"
+    - "token_loss_path"
+  sae_features:
+    required: true
+    npy_glob: "sae_features_{split}.npy"
+    meta_glob: "sae_features_{split}_meta.pt"
+  label_column: "score"
+
+optimization:
+  batch_size: 24
+  num_workers: 6
+  epochs: 12
+  lr: 0.0001
+  weight_decay: 0.0
+  eval_num_workers: 0
+  prefetch_factor: 1
+
+checkpoint:
+  name_template: "f06_loss_sae_cnn_{dataset_scope}"

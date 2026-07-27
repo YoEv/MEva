@@ -1,0 +1,4 @@
+model_type: "sae_verifier"
+input_dim: 1024
+hidden_dim: 512
+dropout: 0.1

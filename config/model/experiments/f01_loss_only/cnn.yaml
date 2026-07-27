@@ -1,0 +1,18 @@
+experiment_family_id: "f01"
+experiment_family_name: "loss_only"
+backbone: "cnn"
+
+input_channels:
+  - "loss_curve"
+
+# Single 1D sequence → regression head (matches exp12 loss-curve CNN style)
+architecture:
+  type: "cnn"
+  conv_channels: [32, 64, 128]
+  kernel_sizes: [7, 5, 3]
+  pool: "adaptive_avg"
+  hidden_dim: 256
+  dropout: 0.1
+  output_dim: 1
+
+release_entrypoint: "train_loss_curve_cnn"

@@ -1,0 +1,23 @@
+experiment_family_id: "f01"
+experiment_family_name: "loss_only"
+backbone: "cnn"
+
+legacy_script_key: "train_loss_curve_cnn"
+
+data:
+  manifest_columns_required:
+    - "score"
+    - "audio_path"
+    - "token_loss_path"
+  label_column: "score"
+
+optimization:
+  batch_size: 16
+  num_workers: 6
+  epochs: 10
+  lr: 0.0001
+  weight_decay: 0.0
+  scheduler: null
+
+checkpoint:
+  name_template: "f01_loss_only_cnn_{dataset_scope}"

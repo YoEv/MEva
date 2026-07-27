@@ -1,0 +1,17 @@
+experiment_family_id: "f02"
+experiment_family_name: "entropy_only"
+backbone: "cnn"
+
+input_channels:
+  - "entropy_curve"
+
+architecture:
+  type: "cnn"
+  conv_channels: [32, 64, 128]
+  kernel_sizes: [7, 5, 3]
+  pool: "adaptive_avg"
+  hidden_dim: 256
+  dropout: 0.1
+  output_dim: 1
+
+release_entrypoint: "train_hybrid_cnn"

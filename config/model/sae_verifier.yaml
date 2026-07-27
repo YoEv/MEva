@@ -1,0 +1,5 @@
+# Classifier / regressor on precomputed SAE features (exp11 verifier style).
+input_dim: 1024
+hidden_dim: 512
+dropout: 0.1
+output_dim: 1

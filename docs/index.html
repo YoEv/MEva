@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEva — Automatic Music Evaluation with Model-Intrinsic Signals</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color:#1a1a1a; line-height:1.6;
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("assets/img/ink-bg.png");
+    background-repeat:no-repeat; background-position:center top; background-size:cover;
+    background-attachment:fixed;
+  }
+  nav { position:sticky; top:0; z-index:9; background:rgba(0,0,0,0.85); padding:0.6rem 1rem; text-align:center; }
+  nav a { color:#eee; text-decoration:none; margin:0 1.1rem; font-size:0.95rem; letter-spacing:0.02em; }
+  nav a:hover { color:#fff; text-decoration:underline; }
+  .wrap { max-width:1000px; margin:0 auto; padding:1.5rem 1.2rem 4rem; }
+  header { text-align:center; padding:3rem 1rem 1.5rem; }
+  header h1 { font-size:1.9rem; line-height:1.3; max-width:56rem; margin:0 auto 1rem; }
+  .authors { font-size:1.05rem; margin-bottom:0.3rem; }
+  .affil { font-size:0.9rem; color:#444; margin-bottom:1.2rem; }
+  .btns a { display:inline-block; background:#111; color:#fff; padding:0.5rem 1.3rem; border-radius:2rem;
+             text-decoration:none; margin:0.25rem; font-size:0.95rem; font-family:sans-serif; }
+  .btns a:hover { background:#333; }
+  section { background:rgba(255,255,255,0.82); border-radius:8px; padding:1.6rem 1.8rem; margin:1.6rem 0;
+             box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+  h2 { font-size:1.35rem; margin-bottom:0.8rem; border-bottom:2px solid #1a1a1a; padding-bottom:0.35rem; }
+  h3 { font-size:1.05rem; margin:1.1rem 0 0.5rem; }
+  p  { margin:0.6rem 0; }
+  .figimg { max-width:100%; display:block; margin:1rem auto; }
+  .cap { font-size:0.85rem; color:#555; text-align:center; max-width:44rem; margin:0.3rem auto 0; }
+  audio { width:100%; max-width:230px; height:32px; display:block; margin:0.15rem 0; }
+  /* wager grid */
+  .wgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:0.8rem; margin-top:0.6rem; }
+  .wcell { background:rgba(255,255,255,0.85); border:1px solid #ddd; border-radius:6px; padding:0.6rem; }
+  .wname { font-family:sans-serif; font-size:0.82rem; font-weight:bold; margin-bottom:0.3rem; }
+  .wtag { font-weight:normal; color:#875; margin-left:0.4rem; font-size:0.75rem; }
+  .wdesc { font-size:0.8rem; color:#333; margin-top:0.3rem; }
+  /* SAE rows */
+  .srow { display:grid; grid-template-columns:5.5rem 8.5rem 1fr 15.5rem; gap:0.7rem; align-items:center;
+           padding:0.55rem 0.2rem; border-bottom:1px solid #e2e2e2; }
+  .scell.rank { font-family:sans-serif; font-weight:bold; font-size:0.95rem; }
+  .lid { font-weight:normal; color:#999; font-size:0.75rem; display:block; }
+  .rbar { display:inline-block; width:52px; height:10px; background:#f0f0f0; border-left:1px solid #999;
+           vertical-align:middle; }
+  .rfill { display:block; height:100%; }
+  .rfill.pos { background:#c0392b99; }
+  .rfill.neg { background:#2c3e9999; }
+  .rval { font-family:sans-serif; font-size:0.8rem; margin-left:0.4rem; vertical-align:middle; }
+  .vlm  { font-size:0.9rem; }
+  .vlm::before  { content:"VLM: "; font-family:sans-serif; font-size:0.72rem; color:#888; }
+  .prod { font-size:0.9rem; }
+  .prod::before { content:"producer: "; font-family:sans-serif; font-size:0.72rem; color:#888; }
+  .silence { font-size:0.82rem; color:#777; font-style:italic; }
+  .ghead { font-family:sans-serif; font-size:0.85rem; font-weight:bold; color:#666; margin-top:1rem;
+            text-transform:uppercase; letter-spacing:0.05em; }
+  footer { text-align:center; font-size:0.8rem; color:#555; padding:2rem 1rem; }
+  pre.bib { background:rgba(250,250,250,0.9); border:1px solid #ddd; padding:0.9rem; font-size:0.78rem;
+             overflow-x:auto; border-radius:6px; }
+  @media (max-width:720px) { .srow { grid-template-columns:1fr 1fr; } .scell.aud { grid-column:1/-1; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#about">About</a><a href="#wager">Prediction as a Wager</a><a href="#sae">SAE Concepts</a><a href="#spectral">Temporal–Spectral</a><a href="#cite">Citation</a>
+</nav>
+<div class="wrap">
+<header>
+  <h1>Do Music Generative Models Understand Musicality?<br>Automatic Music Evaluation with Model-Intrinsic Signals</h1>
+  <div class="authors">Xiaosha Li&sup1; &nbsp; Chun Liu&sup2; &nbsp; Ziyu Wang&sup3;</div>
+  <div class="affil">&sup1;Georgia Institute of Technology &nbsp; &sup2;ByteDance Inc. &nbsp; &sup3;New York University / MBZUAI</div>
+  <div class="btns">
+    <a href="assets/paper.pdf">&#128196; Paper</a>
+    <a href="https://github.com/YoEv/MEva">&#128187; Code</a>
+    <a href="https://huggingface.co/Dev4IC">&#129303; Weights</a>
+  </div>
+</header>
+
+<section id="about">
+  <h2>About</h2>
+  <p>Can a music generation model judge how good its own output sounds to a human,
+     using only its <b>intrinsic signals</b> — without any external audio verifier?
+     We extract three signals from a single frozen MusicGen under teacher forcing —
+     per-token <b>loss</b> ℓ<sub>t</sub>, next-token <b>predictive entropy</b> H<sub>t</sub>, and
+     <b>sparse-autoencoder (SAE) latents</b> of the hidden states — and align them with human
+     ratings from five public benchmarks (MusicEval, SongEval, AIME, MusicPref, Music Arena).
+     A lightweight CNN on these curves rivals or beats audio-based aesthetics baselines,
+     without ever processing the raw audio.</p>
+  <img class="figimg" src="assets/img/fig_overview.png" alt="Experimental overview">
+  <p class="cap">Pipeline: human-rated audio → teacher-forced intrinsic curves (loss / entropy / SAE) → lightweight prediction model → correlation with human scores.</p>
+</section>
+
+<section id="wager">
+  <h2>Prediction as a Wager</h2>
+  <p>Following Huron's account of musical anticipation, each generation step is a wager:
+     entropy sets the <b>bet width</b>, loss is the <b>payout</b>. Crossing the two splits tokens into
+     four scenarios; the share of <b>overconfident-wrong</b> (CW: narrow bet, surprised) tokens is the
+     dominant local correlate of <i>low</i> ratings, while <b>uncertain-wrong</b> (UW: wide bet, still surprised)
+     tokens accompany <i>high</i> ratings.</p>
+  <img class="figimg" src="assets/img/fig_wager.png" alt="Wager plane example">
+  <p class="cap">Example clip (y=4.9): loss/entropy window with dense CW+UW co-occurrence, and the full-length (ℓ<sub>t</sub>, H<sub>t</sub>) wager plane.</p>
+  <p>Listen for yourself — the densest 2-second CW / UW windows from the MusicEval test split,
+     each with a blind Gemini-2.5-Flash caption (no labels or ratings shown to the model).
+     6/10 CW windows are audibly disruptive, vs. 3/10 for UW:</p>
+  <h3>Overconfident-Wrong (CW) — the model bet narrow and was surprised</h3>
+  <div class="wgrid"><div class="wcell"><div class="wname">CW 01<span class="wtag">unusual-timbre</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_01.mp3"></audio>
+<div class="wdesc">A sustained synth pad plays a chord with a slightly detuned or dissonant quality.</div></div><div class="wcell"><div class="wname">CW 02<span class="wtag">unusual-timbre</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_02.mp3"></audio>
+<div class="wdesc">A high-pitched, sustained, and slightly detuned sound with a buzzing quality is heard.</div></div><div class="wcell"><div class="wname">CW 03<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_03.mp3"></audio>
+<div class="wdesc">A sustained, high-pitched synth note with a slight vibrato is heard.</div></div><div class="wcell"><div class="wname">CW 04<span class="wtag">timbre-artefact</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_04.mp3"></audio>
+<div class="wdesc">A sudden, high-pitched, almost glitchy sound occurs at the very beginning of the excerpt.</div></div><div class="wcell"><div class="wname">CW 05<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_05.mp3"></audio>
+<div class="wdesc">A high-pitched, sustained synth note with a slight vibrato is heard.</div></div><div class="wcell"><div class="wname">CW 06<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_06.mp3"></audio>
+<div class="wdesc">A high-pitched, sustained synth sound with a slight vibrato is heard.</div></div><div class="wcell"><div class="wname">CW 07<span class="wtag">novel-chord</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_07.mp3"></audio>
+<div class="wdesc">A sudden, loud, and dissonant chord plays, clashing with the previous harmony.</div></div><div class="wcell"><div class="wname">CW 08<span class="wtag">timbre-artefact</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_08.mp3"></audio>
+<div class="wdesc">A sudden, harsh digital noise or glitch occurs.</div></div><div class="wcell"><div class="wname">CW 09<span class="wtag">abrupt-cut</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_09.mp3"></audio>
+<div class="wdesc">A female vocal sample is abruptly cut off mid-word.</div></div><div class="wcell"><div class="wname">CW 10<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/cw_10.mp3"></audio>
+<div class="wdesc">A high-pitched, sustained synth note plays over a bassline.</div></div></div>
+  <h3>Uncertain-Wrong (UW) — the model bet wide and was still surprised</h3>
+  <div class="wgrid"><div class="wcell"><div class="wname">UW 01<span class="wtag">timbre-artefact</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_01.mp3"></audio>
+<div class="wdesc">A sudden, loud, and distorted cymbal crash occurs, disrupting the flow.</div></div><div class="wcell"><div class="wname">UW 02<span class="wtag">unusual-timbre</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_02.mp3"></audio>
+<div class="wdesc">A sudden, high-pitched, almost vocal-like sound briefly appears and then disappears.</div></div><div class="wcell"><div class="wname">UW 03<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_03.mp3"></audio>
+<div class="wdesc">A male voice sings a phrase with a slight vibrato, accompanied by a simple, clean synth melody.</div></div><div class="wcell"><div class="wname">UW 04<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_04.mp3"></audio>
+<div class="wdesc">A sustained, slightly detuned synth pad plays a consonant chord.</div></div><div class="wcell"><div class="wname">UW 05<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_05.mp3"></audio>
+<div class="wdesc">A sustained, slightly detuned string note with a subtle vibrato is heard.</div></div><div class="wcell"><div class="wname">UW 06<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_06.mp3"></audio>
+<div class="wdesc">A male voice sings a sustained note with a slight vibrato.</div></div><div class="wcell"><div class="wname">UW 07<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_07.mp3"></audio>
+<div class="wdesc">A sustained, slightly detuned string note with a vibrato.</div></div><div class="wcell"><div class="wname">UW 08<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_08.mp3"></audio>
+<div class="wdesc">A rhythmic synth arpeggio plays over a kick drum beat.</div></div><div class="wcell"><div class="wname">UW 09<span class="wtag">ordinary</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_09.mp3"></audio>
+<div class="wdesc">A female voice sings a sustained note with a slight vibrato.</div></div><div class="wcell"><div class="wname">UW 10<span class="wtag">unusual-timbre</span></div>
+<audio controls preload="none" src="assets/audio/wager/uw_10.mp3"></audio>
+<div class="wdesc">A high-pitched, percussive sound with a metallic quality occurs at the very end of the excerpt.</div></div></div>
+</section>
+
+<section id="sae">
+  <h2>SAE Latents: Good vs. Bad vs. Neutral Concepts</h2>
+  <p>Ranking SAE latents by rating-aligned gradient attribution ρ<sub>k</sub> yields cleanly separable
+     detectors. For each latent below: the paper's blind labels from Gemini-2.5-Flash (VLM) and a
+     professional music producer, plus the top-activating 2-s windows from two different clips.
+     On the good side both agree on conventional musical content; on the bad side the VLM still
+     issues clean genre labels while the producer reaches for distortion terms.</p>
+  <div class="ghead">good-aligned (ρ<sub>k</sub> &gt; 0)</div>
+  <div class="srow">
+  <div class="scell rank">g-1 <span class="lid">#2251</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:42px"></span></span><span class="rval">+0.54</span></div>
+  <div class="scell lab"><div class="vlm">classical, string</div><div class="prod">string classical</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g1_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">g-2 <span class="lid">#207</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:38px"></span></span><span class="rval">+0.49</span></div>
+  <div class="scell lab"><div class="vlm">folk, upbeat</div><div class="prod">folk guitar texture</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g2_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g2_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">g-5 <span class="lid">#3758</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:35px"></span></span><span class="rval">+0.45</span></div>
+  <div class="scell lab"><div class="vlm">folk, calm</div><div class="prod">choir + plucked folk</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g5_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g5_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">g-7 <span class="lid">#1093</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:34px"></span></span><span class="rval">+0.44</span></div>
+  <div class="scell lab"><div class="vlm">folk, melancholic</div><div class="prod">flute texture</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g7_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g7_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">g-9 <span class="lid">#3745</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:33px"></span></span><span class="rval">+0.43</span></div>
+  <div class="scell lab"><div class="vlm">ambient, calm</div><div class="prod">ambient pads + vocal tex.</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g9_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g9_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">g-10 <span class="lid">#282</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:33px"></span></span><span class="rval">+0.43</span></div>
+  <div class="scell lab"><div class="vlm">pop, upbeat</div><div class="prod">clear pop with vocal+beat</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g10_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g10_b.mp3"></audio></div>
+</div>
+  <div class="ghead">near-null (|ρ<sub>k</sub>| &lt; 0.01)</div>
+  <div class="srow">
+  <div class="scell rank">m+3 <span class="lid">#3308</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:0px"></span></span><span class="rval">+0.005</span></div>
+  <div class="scell lab"><div class="vlm">rock, energetic</div><div class="prod">loud rock, single long note</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mp3_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mp3_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">m+1 <span class="lid">#1004</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:0px"></span></span><span class="rval">+0.001</span></div>
+  <div class="scell lab"><div class="vlm">pop, energetic</div><div class="prod">clear melody + accomp.</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mp1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mp1_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">m−1 <span class="lid">#3628</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:0px"></span></span><span class="rval">−0.001</span></div>
+  <div class="scell lab"><div class="vlm">classical, melanch.</div><div class="prod">harsh sound, bad groove</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mm1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mm1_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">m−3 <span class="lid">#3474</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:0px"></span></span><span class="rval">−0.002</span></div>
+  <div class="scell lab"><div class="vlm">hip-hop, energetic</div><div class="prod">bad groove, noise</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mm3_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mm3_b.mp3"></audio></div>
+</div>
+  <div class="ghead">bad-aligned (ρ<sub>k</sub> &lt; 0)</div>
+  <div class="srow">
+  <div class="scell rank">b-9 <span class="lid">#3860</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:33px"></span></span><span class="rval">−0.43</span></div>
+  <div class="scell lab"><div class="vlm">classical, playful</div><div class="prod">dissonant wide-range</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b9_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b9_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">b-8 </div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:35px"></span></span><span class="rval">−0.45</span></div>
+  <div class="scell lab"><div class="vlm">— (silence)</div><div class="prod">EOS / delay tokens</div></div>
+  <div class="scell aud"><span class="silence">silent latent — fires on EOS / delay tokens</span></div>
+</div><div class="srow">
+  <div class="scell rank">b-7 <span class="lid">#3695</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:35px"></span></span><span class="rval">−0.46</span></div>
+  <div class="scell lab"><div class="vlm">classical, melanch.</div><div class="prod">dissonant violin texture</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b7_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b7_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">b-5 <span class="lid">#1743</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:36px"></span></span><span class="rval">−0.47</span></div>
+  <div class="scell lab"><div class="vlm">hip-hop, tense</div><div class="prod">random perc., harsh hi-freq</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b5_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b5_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">b-4 <span class="lid">#1533</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:37px"></span></span><span class="rval">−0.48</span></div>
+  <div class="scell lab"><div class="vlm">pop, upbeat</div><div class="prod">bad vocal + noisy perc.</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b4_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b4_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">b-3 </div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:37px"></span></span><span class="rval">−0.48</span></div>
+  <div class="scell lab"><div class="vlm">— (silence)</div><div class="prod">EOS / delay tokens</div></div>
+  <div class="scell aud"><span class="silence">silent latent — fires on EOS / delay tokens</span></div>
+</div><div class="srow">
+  <div class="scell rank">b-2 <span class="lid">#1724</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:46px"></span></span><span class="rval">−0.60</span></div>
+  <div class="scell lab"><div class="vlm">rock, energetic</div><div class="prod">big noise, random trumpet</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b2_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b2_b.mp3"></audio></div>
+</div><div class="srow">
+  <div class="scell rank">b-1 <span class="lid">#1398</span></div>
+  <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:47px"></span></span><span class="rval">−0.61</span></div>
+  <div class="scell lab"><div class="vlm">classical, calm</div><div class="prod">random hi-freq noise</div></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b1_b.mp3"></audio></div>
+</div>
+</section>
+
+<section id="spectral">
+  <h2>Temporal–Spectral Structure</h2>
+  <p>FFT band power of the loss/entropy curves correlates with ratings in rate-specific ways:
+     rapid <b>phrase-rate</b> change reads as formal instability (r≈−0.39);
+     <b>beat-rate</b> variation aligns with groove (r≈+0.41/+0.48);
+     millisecond-grain <b>ℓ–H coupling</b> is the spectral signature of glitchy audio (r≈−0.54).</p>
+  <img class="figimg" src="assets/img/fig_spectral.png" alt="Spectral correlates">
+</section>
+
+<section id="cite">
+  <h2>Citation</h2>
+  <pre class="bib">@inproceedings{li2026meva,
+  title     = {Do Music Generative Models Understand Musicality? Automatic Music Evaluation with Model-Intrinsic Signals},
+  author    = {Li, Xiaosha and Liu, Chun and Wang, Ziyu},
+  booktitle = {Proc. of the 27th Int. Society for Music Information Retrieval Conf. (ISMIR)},
+  year      = {2026}
+}</pre>
+</section>
+
+<footer>
+  Audio excerpts are 2-second research snippets from the MusicEval benchmark (AudioMOS 2025) and remain the property of their creators.<br>
+  Companion page of the ISMIR 2026 paper &middot; sister project: <a href="https://noiseloss.github.io">When Noise Lowers the Loss</a>
+</footer>
+</div>
+</body>
+</html>

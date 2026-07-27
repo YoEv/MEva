@@ -1,0 +1,22 @@
+# Baseline rescaling / correlation methods: see baseline_eval.yaml
+
+segment_scoring:
+  enabled: true
+  primary_model: "rnn"
+  optional_models: []
+  segment_seconds: 5
+  hop_seconds: 2
+
+curve_alignment:
+  enabled: true
+  pattern_tags:
+    - "HL"
+    - "LH"
+    - "HH"
+    - "LL"
+
+sae_interpretability:
+  enabled: true
+  source: "external/musicdiscovery"
+  clustering_method: "kmeans"
+  explain_mode: "synthetic_semantic_summary"

@@ -1,0 +1,8 @@
+input_channels:
+  - "loss_curve"
+  - "entropy_curve"
+  - "sae_feature"
+
+cnn_branch:
+  hidden_dim: 256
+  dropout: 0.1

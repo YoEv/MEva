@@ -1,0 +1,5 @@
+model_name: "facebook/musicgen-small"
+input_dim: 1024
+hidden_dim: 16384
+l1_lambda: 0.01
+checkpoint_source: "external/musicdiscovery"

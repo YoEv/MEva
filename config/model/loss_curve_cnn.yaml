@@ -1,0 +1,5 @@
+backbone: "cnn"
+input_channels:
+  - "loss_curve"
+hidden_dim: 256
+dropout: 0.1

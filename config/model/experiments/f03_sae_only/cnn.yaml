@@ -1,0 +1,22 @@
+experiment_family_id: "f03"
+experiment_family_name: "sae_only"
+backbone: "cnn"
+
+input_channels:
+  - "sae_feature"
+
+# Precomputed SAE activations per timestep or pooled; CNN treats sequence over tokens
+sae:
+  feature_dim: 1024
+  source: "musicdiscovery_musicgen_small"
+
+architecture:
+  type: "cnn"
+  conv_channels: [64, 128, 256]
+  kernel_sizes: [5, 3, 3]
+  pool: "adaptive_avg"
+  hidden_dim: 512
+  dropout: 0.15
+  output_dim: 1
+
+release_entrypoint: "train_hybrid_cnn"

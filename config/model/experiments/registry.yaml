@@ -1,0 +1,71 @@
+# Central index: 7 feature families x 1 backbone (CNN) = 7 runs per dataset track.
+# Paths are relative to config/
+#
+# NOTE: Transformer backbones were removed; only CNN backbones remain.
+
+version: 2
+
+families:
+  - id: f01
+    name: loss_only
+    description: "Loss curve only"
+  - id: f02
+    name: entropy_only
+    description: "Entropy curve only (requires entropy_curve_path in manifest)"
+  - id: f03
+    name: sae_only
+    description: "Precomputed SAE features only (MusicGen-small / musicdiscovery)"
+  - id: f04
+    name: loss_entropy
+    description: "Loss + entropy"
+  - id: f05
+    name: entropy_sae
+    description: "Entropy + SAE"
+  - id: f06
+    name: loss_sae
+    description: "Loss + SAE"
+  - id: f07
+    name: loss_entropy_sae
+    description: "Loss + entropy + SAE (full hybrid)"
+
+backbones: [cnn]
+
+matrix:
+  f01:
+    cnn:
+      model: model/experiments/f01_loss_only/cnn.yaml
+      training: training/experiments/f01_loss_only/cnn.yaml
+  f02:
+    cnn:
+      model: model/experiments/f02_entropy_only/cnn.yaml
+      training: training/experiments/f02_entropy_only/cnn.yaml
+  f03:
+    cnn:
+      model: model/experiments/f03_sae_only/cnn.yaml
+      training: training/experiments/f03_sae_only/cnn.yaml
+  f04:
+    cnn:
+      model: model/experiments/f04_loss_entropy/cnn.yaml
+      training: training/experiments/f04_loss_entropy/cnn.yaml
+  f05:
+    cnn:
+      model: model/experiments/f05_entropy_sae/cnn.yaml
+      training: training/experiments/f05_entropy_sae/cnn.yaml
+  f06:
+    cnn:
+      model: model/experiments/f06_loss_sae/cnn.yaml
+      training: training/experiments/f06_loss_sae/cnn.yaml
+  f07:
+    cnn:
+      model: model/experiments/f07_loss_entropy_sae/cnn.yaml
+      training: training/experiments/f07_loss_entropy_sae/cnn.yaml
+
+auxiliary:
+  sae_sparse_training:
+    model: model/sae_sparse_autoencoder.yaml
+    training: training/sae_sparse_autoencoder.yaml
+    note: "Train SAE on MusicGen activations; prerequisite for f03/f05/f06/f07 SAE features."
+  sae_verifier:
+    model: model/sae_verifier.yaml
+    training: training/sae_verifier.yaml
+    note: "Optional verifier on precomputed SAE features."

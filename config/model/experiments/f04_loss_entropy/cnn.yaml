@@ -1,0 +1,26 @@
+experiment_family_id: "f04"
+experiment_family_name: "loss_entropy"
+backbone: "cnn"
+
+input_channels:
+  - "loss_curve"
+  - "entropy_curve"
+
+fusion:
+  mode: "concat_channels"
+  # After per-channel shallow encoders, concat along channel dim then stack for 1D CNN
+  per_channel_encoder:
+    type: "cnn"
+    hidden_dim: 128
+    dropout: 0.1
+
+architecture:
+  type: "cnn"
+  conv_channels: [64, 128, 256]
+  kernel_sizes: [7, 5, 3]
+  pool: "adaptive_avg"
+  hidden_dim: 256
+  dropout: 0.1
+  output_dim: 1
+
+release_entrypoint: "train_hybrid_cnn"

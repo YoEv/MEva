@@ -1,0 +1,30 @@
+experiment_family_id: "f07"
+experiment_family_name: "loss_entropy_sae"
+backbone: "cnn"
+
+input_channels:
+  - "loss_curve"
+  - "entropy_curve"
+  - "sae_feature"
+
+sae:
+  feature_dim: 1024
+  source: "musicdiscovery_musicgen_small"
+
+fusion:
+  mode: "concat_channels"
+  per_channel_encoder:
+    type: "cnn"
+    hidden_dim: 128
+    dropout: 0.1
+
+architecture:
+  type: "cnn"
+  conv_channels: [64, 128, 256]
+  kernel_sizes: [7, 5, 3]
+  pool: "adaptive_avg"
+  hidden_dim: 512
+  dropout: 0.15
+  output_dim: 1
+
+release_entrypoint: "train_hybrid_cnn"

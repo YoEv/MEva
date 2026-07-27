@@ -1,0 +1,16 @@
+target_score_range: [1.0, 5.0]
+keep_decimal_scores: true
+
+pairwise_scaling:
+  enabled: true
+  methods:
+    - "bradley_terry"
+    - "mse_regression"
+
+output_columns:
+  bt_score: "score_bt_1to5"
+  mse_score: "score_mse_1to5"
+
+label_selection:
+  default_scalar_label: "score_bt_1to5"
+  allow_compare_bt_vs_mse: true

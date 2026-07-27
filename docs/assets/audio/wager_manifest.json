@@ -1,0 +1,102 @@
+{
+ "cw_01": {
+  "desc": "A sustained synth pad plays a chord with a slightly detuned or dissonant quality.",
+  "tag": "unusual-timbre",
+  "cat": "surprising"
+ },
+ "cw_02": {
+  "desc": "A high-pitched, sustained, and slightly detuned sound with a buzzing quality is heard.",
+  "tag": "unusual-timbre",
+  "cat": "surprising"
+ },
+ "cw_03": {
+  "desc": "A sustained, high-pitched synth note with a slight vibrato is heard.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "cw_04": {
+  "desc": "A sudden, high-pitched, almost glitchy sound occurs at the very beginning of the excerpt.",
+  "tag": "timbre-artefact",
+  "cat": "wrong"
+ },
+ "cw_05": {
+  "desc": "A high-pitched, sustained synth note with a slight vibrato is heard.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "cw_06": {
+  "desc": "A high-pitched, sustained synth sound with a slight vibrato is heard.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "cw_07": {
+  "desc": "A sudden, loud, and dissonant chord plays, clashing with the previous harmony.",
+  "tag": "novel-chord",
+  "cat": "surprising"
+ },
+ "cw_08": {
+  "desc": "A sudden, harsh digital noise or glitch occurs.",
+  "tag": "timbre-artefact",
+  "cat": "wrong"
+ },
+ "cw_09": {
+  "desc": "A female vocal sample is abruptly cut off mid-word.",
+  "tag": "abrupt-cut",
+  "cat": "wrong"
+ },
+ "cw_10": {
+  "desc": "A high-pitched, sustained synth note plays over a bassline.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_01": {
+  "desc": "A sudden, loud, and distorted cymbal crash occurs, disrupting the flow.",
+  "tag": "timbre-artefact",
+  "cat": "wrong"
+ },
+ "uw_02": {
+  "desc": "A sudden, high-pitched, almost vocal-like sound briefly appears and then disappears.",
+  "tag": "unusual-timbre",
+  "cat": "surprising"
+ },
+ "uw_03": {
+  "desc": "A male voice sings a phrase with a slight vibrato, accompanied by a simple, clean synth melody.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_04": {
+  "desc": "A sustained, slightly detuned synth pad plays a consonant chord.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_05": {
+  "desc": "A sustained, slightly detuned string note with a subtle vibrato is heard.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_06": {
+  "desc": "A male voice sings a sustained note with a slight vibrato.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_07": {
+  "desc": "A sustained, slightly detuned string note with a vibrato.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_08": {
+  "desc": "A rhythmic synth arpeggio plays over a kick drum beat.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_09": {
+  "desc": "A female voice sings a sustained note with a slight vibrato.",
+  "tag": "ordinary",
+  "cat": "ordinary"
+ },
+ "uw_10": {
+  "desc": "A high-pitched, percussive sound with a metallic quality occurs at the very end of the excerpt.",
+  "tag": "unusual-timbre",
+  "cat": "surprising"
+ }
+}

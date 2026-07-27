@@ -1,0 +1,14 @@
+label_mode: "clean"
+
+split_seed: 42
+split_strategy: "source_stratified"  # source_stratified | global_random
+
+splits:
+  train: "train.csv"
+  val: "val.csv"
+  test: "test.csv"
+
+dataset_scopes:
+  small_scale: ["musiceval"]
+  large_scale_single: ["musicpref", "aime", "songeval", "musiceval", "music_arena"]
+  large_scale_merged: ["all_5_datasets"]
