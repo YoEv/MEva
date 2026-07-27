@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""从稀疏CSR还原 dense sharded npy(无GPU)。用法: <sparse_dir> <dense_out_dir> <hidden_dim>"""
+"""Restore dense sharded npy from sparse CSR (CPU-only).
+
+Usage: sparse_to_dense.py <sparse_dir> <dense_out_dir> <hidden_dim>
+"""
 import sys, os, glob, numpy as np, torch
 sp_root, out_root, HD = sys.argv[1], sys.argv[2], int(sys.argv[3])
 for split in ['train','val','test']:

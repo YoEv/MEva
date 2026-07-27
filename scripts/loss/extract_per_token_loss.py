@@ -23,7 +23,7 @@ def load_model(device):
     model.eval()
     
     compression_ratio = model.config.audio_encoder.frame_rate / model.config.audio_encoder.sampling_rate
-    print(f"压缩比率: {compression_ratio:.4f} (每音频秒生成{model.config.audio_encoder.frame_rate}个tokens)")
+    print(f"Compression ratio: {compression_ratio:.4f} ({model.config.audio_encoder.frame_rate} tokens per second of audio)")
     return model, processor
 
 def _compute_cross_entropy(
@@ -34,7 +34,7 @@ def _compute_cross_entropy(
     assert mask.shape == targets.shape
     
     if reduction == "none":
-        # 返回每个codebook每个时间步的loss，形状为(B, K, T)
+        # return per-codebook, per-step loss of shape (B, K, T)
         ce_per_token = torch.zeros_like(targets, dtype=torch.float32)
         for k in range(K):
             logits_k = logits[:, k, ...].contiguous().view(-1, logits.size(-1))  # [B x T, card]
@@ -47,7 +47,7 @@ def _compute_cross_entropy(
         
         return ce_per_token
     else:
-        # 原有的平均计算逻辑
+        # original mean-reduction logic
         ce = torch.zeros([], device=targets.device)
         ce_per_codebook = []
         for k in range(K):
@@ -64,14 +64,14 @@ def _compute_cross_entropy(
 
 def save_tokens_as_csv(ce_per_token, audio_path, token_output_dir, relative_path=None):
     """
-    将per-token loss保存为CSV文件，只保存平均值
+    Save per-token losses to CSV (average across codebooks only)
     """
     if relative_path:
-        # 使用相对路径信息，将路径分隔符替换为下划线避免文件系统问题
+        # use the relative path, replacing separators with underscores for filesystem safety
         rel_dir = os.path.dirname(relative_path)
         base_filename = os.path.splitext(os.path.basename(relative_path))[0]
         if rel_dir:
-            # 将路径分隔符替换为下划线，创建唯一的文件名
+            # replace path separators with underscores to build a unique filename
             filename = f"{rel_dir.replace(os.sep, '_')}_{base_filename}"
         else:
             filename = base_filename
@@ -82,17 +82,17 @@ def save_tokens_as_csv(ce_per_token, audio_path, token_output_dir, relative_path
     os.makedirs(token_output_dir, exist_ok=True)
     
     try:
-        # 转换为numpy数组
+        # convert to numpy array
         ce_np = ce_per_token.cpu().numpy()
         
-        # 计算每个token位置的平均值
+        # compute the mean at each token position
         avg_records = []
         
         if ce_np.ndim == 3:  # Shape: (B, K, T)
             B, K, T = ce_np.shape
             for b in range(B):
                 for t in range(T):
-                    # 计算该token位置上所有codebook的平均值
+                    # average over all codebooks at this token position
                     token_avg = float(ce_np[b, :, t].mean())
                     avg_records.append({
                         'token_position': t,
@@ -101,30 +101,30 @@ def save_tokens_as_csv(ce_per_token, audio_path, token_output_dir, relative_path
         elif ce_np.ndim == 2:  # Shape: (K, T)
             K, T = ce_np.shape
             for t in range(T):
-                # 计算该token位置上所有codebook的平均值
+                # average over all codebooks at this token position
                 token_avg = float(ce_np[:, t].mean())
                 avg_records.append({
                     'token_position': t,
                     'avg_loss_value': token_avg
                 })
         
-        # 保存平均值数据
+        # save the averaged data
         if avg_records:
             avg_df = pd.DataFrame(avg_records)
             avg_df.to_csv(avg_csv_file, index=False)
-            print(f"保存了 {len(avg_records)} 条平均值记录到 {avg_csv_file}")
+            print(f"Saved {len(avg_records)} averaged records to {avg_csv_file}")
             
-            # 计算并返回总体平均loss
+            # compute and return the overall mean loss
             overall_mean = avg_df['avg_loss_value'].mean()
-            print(f"总体平均loss: {overall_mean:.6f}")
+            print(f"Overall mean loss: {overall_mean:.6f}")
             
             return overall_mean
         else:
-            print(f"没有数据可保存: {filename}")
+            print(f"No data to save: {filename}")
             return None
             
     except Exception as e:
-        print(f"保存CSV时出错 {filename}: {str(e)}")
+        print(f"Error saving CSV {filename}: {str(e)}")
         return None
 
 def process_single_audio(audio_path, model, processor, device, reduction="mean", token_output_dir=None, relative_path=None):
@@ -164,7 +164,7 @@ def process_single_audio(audio_path, model, processor, device, reduction="mean",
             logits = output_logits.view(B, C, K, -1, output_logits.size(-1))
             
             if reduction == "none":
-                # 计算per-token loss
+                # compute per-token loss
                 ce_per_token = _compute_cross_entropy(
                     logits.view(B * C, K, -1, output_logits.size(-1)), 
                     target_tokens.view(B * C, K, -1), 
@@ -172,13 +172,13 @@ def process_single_audio(audio_path, model, processor, device, reduction="mean",
                     reduction=reduction)
                 
                 if token_output_dir:
-                    # 保存为CSV并返回平均loss
+                    # save CSV and return the mean loss
                     avg_loss = save_tokens_as_csv(ce_per_token, audio_path, token_output_dir, relative_path)
                     return avg_loss if avg_loss is not None else ce_per_token.mean().item()
                 else:
                     return ce_per_token.mean().item()
             else:
-                # 计算平均loss
+                # compute mean loss
                 ce, ce_per_codebook = _compute_cross_entropy(
                     logits.view(B * C, K, -1, output_logits.size(-1)), 
                     target_tokens.view(B * C, K, -1), 
@@ -187,7 +187,7 @@ def process_single_audio(audio_path, model, processor, device, reduction="mean",
                 return ce.item()
 
     except Exception as e:
-        print(f"处理音频时出错 {os.path.basename(audio_path)}: {str(e)}")
+        print(f"Error processing audio {os.path.basename(audio_path)}: {str(e)}")
         return None
 
 def process_audio_directory(audio_dir, model, processor, device, output_file=None, reduction="mean", token_output_dir=None):
@@ -251,18 +251,18 @@ def process_audio_directory(audio_dir, model, processor, device, output_file=Non
     return results, error_files
 
 def main():
-    parser = argparse.ArgumentParser(description="使用musicgen-small模型计算音频文件的loss值")
-    parser.add_argument("--audio_dir", type=str, required=True, help="音频文件目录")
-    parser.add_argument("--output_file", type=str, default="results_small.txt", help="输出结果文件路径")
-    parser.add_argument("--force_cpu", action="store_true", help="强制使用CPU处理所有文件")
-    parser.add_argument("--reduction", type=str, choices=["mean", "none"], default="mean", help="Loss reduction类型: mean或none (保存per-token losses)")
-    parser.add_argument("--token_output_dir", type=str, default=None, help="当reduction=none时保存per-token losses的目录")
+    parser = argparse.ArgumentParser(description="Compute audio loss values with the musicgen-small model")
+    parser.add_argument("--audio_dir", type=str, required=True, help="directory of audio files")
+    parser.add_argument("--output_file", type=str, default="results_small.txt", help="output results file path")
+    parser.add_argument("--force_cpu", action="store_true", help="force CPU for all files")
+    parser.add_argument("--reduction", type=str, choices=["mean", "none"], default="mean", help="loss reduction: mean or none (none saves per-token losses)")
+    parser.add_argument("--token_output_dir", type=str, default=None, help="directory for per-token losses when reduction=none")
     
     args = parser.parse_args()
 
     if args.reduction == "none" and not args.token_output_dir:
         args.token_output_dir = "token_losses"
-        print(f"使用默认token输出目录: {args.token_output_dir}")
+        print(f"Using default token output dir: {args.token_output_dir}")
 
     original_stdout = None
     if args.output_file:
@@ -270,18 +270,18 @@ def main():
         sys.stdout = open(args.output_file + ".log", 'w')
 
     device = setup_device(args.force_cpu)
-    print(f"使用设备: {device}")
+    print(f"Using device: {device}")
 
     model, processor = load_model(device)
 
-    assert os.path.isdir(args.audio_dir), f"目录不存在: {args.audio_dir}"
+    assert os.path.isdir(args.audio_dir), f"Directory not found: {args.audio_dir}"
 
     results, error_files = process_audio_directory(
         args.audio_dir, model, processor, device, args.output_file, args.reduction, args.token_output_dir
     )
 
     if not args.output_file:
-        print("\n处理结果:")
+        print("\nResults:")
         for filename, loss in results:
             print(f"{filename}: {loss:.4f}")
 
@@ -289,11 +289,11 @@ def main():
         try:
             torch.cuda.synchronize()
             torch.cuda.empty_cache()
-            print("GPU内存已清理")
+            print("GPU memory cleared")
         except Exception as e:
-            print(f"清理GPU内存失败: {e}")
+            print(f"Failed to clear GPU memory: {e}")
     else:
-        print("GPU内存已清理")
+        print("GPU memory cleared")
 
     if original_stdout:
         sys.stdout.close()

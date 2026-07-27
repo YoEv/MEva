@@ -31,7 +31,7 @@ for split in ['train','val','test']:
                 d=np.load(f'{sdir}/{i:06d}.npy'); idx,val,offs=to_csr(d)
                 np.savez(f'{sd}/{gi:06d}.npz', idx=idx,val=val,off=offs); gi+=1; lengths.append(L[i])
         else:
-            # monolithic: musicdiscovery 写的是 raw float32 memmap(无 .npy header), 按 meta shape 读
+            # monolithic: musicdiscovery stores a raw float32 memmap (no .npy header); read via meta shape
             HD=int(m.get('hidden_dim', 4096 if model=='small' else 8192)); tot=int(np.sum(L))
             npy=np.memmap(f'{sae_root}/{ds}/clean/sae_features_{split}.npy',dtype='float32',mode='r',shape=(tot,HD))
             cum=np.concatenate([[0],np.cumsum(L)])

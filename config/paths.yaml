@@ -1,8 +1,9 @@
-# project_root: 不在这里写死；默认由环境变量 PROJECT_ROOT 提供
-# （Python 端使用 cfg.get("project_root", os.environ.get("PROJECT_ROOT", ...)) 解析）。
-# 在服务器端登录后先执行：
-#   export PROJECT_ROOT=/home/<user>/<path_to>/MEva
-# 若需要强制指定，可取消下一行注释并填上绝对路径：
+# project_root is intentionally not hardcoded; it is resolved from the
+# PROJECT_ROOT environment variable (Python side:
+# cfg.get("project_root", os.environ.get("PROJECT_ROOT", ...))).
+# Before running anything:
+#   export PROJECT_ROOT=/path/to/MEva
+# To pin a fixed path instead, uncomment the next line:
 # project_root: "/absolute/path/to/MEva"
 
 data:

@@ -1,6 +1,6 @@
-"""统一内在信号 npz 的读写与校验(schema 见同目录 README.md)。
+"""Unified I/O and validation for intrinsic-signal npz files (schema: README.md).
 
-适配器只需实现: wav -> (loss[K,T], entropy[K,T], mask[T]) 并调用 save_signals()。
+An adapter only implements wav -> (loss[K,T], entropy[K,T], mask[T]) and calls save_signals().
 """
 from __future__ import annotations
 
@@ -61,7 +61,7 @@ def load_signals(path: str | Path):
 
 
 def validate(path: str | Path) -> bool:
-    """--skip-existing 用:文件存在且 schema 完整才算已完成。"""
+    """For --skip-existing: done only if the file exists and its schema validates."""
     try:
         loss, entropy, mask, meta = load_signals(path)
         _check_shapes(loss, entropy, mask, int(meta["K"]))
@@ -71,7 +71,7 @@ def validate(path: str | Path) -> bool:
 
 
 def pool_to_frames(x: np.ndarray, frames: int = 1500) -> np.ndarray:
-    """(K,T) -> (K,frames) 均匀 mean-pool,与论文/既有管线一致;T<frames 时线性插值上采样。"""
+    """(K,T) -> (K,frames) uniform mean-pool (paper protocol); if T<frames, upsample linearly."""
     x = np.asarray(x, dtype=np.float32)
     if x.ndim == 1:
         x = x[None, :]

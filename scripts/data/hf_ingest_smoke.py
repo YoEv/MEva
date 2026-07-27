@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""HF 数据 smoke ingest：导出 wav + 追加写入 master_index.csv（列：source, path, score）。"""
+"""Smoke-test ingest of HF datasets: export wavs and append to master_index.csv (columns: source, path, score)."""
 from __future__ import annotations
 
 import argparse
@@ -65,7 +65,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--repo", required=True)
     p.add_argument("--repo-config", default=None, help="Optional dataset config name, e.g. music-arena monthly config.")
-    p.add_argument("--source-tag", required=True, help="写入 master 的 source；勿用 MusicPrefs（legacy 特殊子目录）")
+    p.add_argument("--source-tag", required=True, help="source tag written to the master index; do not use MusicPrefs (legacy special-cased subdir)")
     p.add_argument("--split", default="train")
     p.add_argument("--out-audio-dir", required=True)
     p.add_argument("--master-csv", required=True)

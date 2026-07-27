@@ -59,9 +59,9 @@ def _loss_from_one_chunk(
 ) -> np.ndarray:
     """Return ``[K, T-1]`` per-codebook cross-entropy for a single chunk.
 
-    ``pattern="parallel"``: 历史口径,对齐 codes 直接前向(论文 Small 口径)。
-    ``pattern="delay"``: MusicGen 原生 delay 交错 teacher-forcing,logits
-    对齐回音频帧(见 lib/repro/musicgen_pattern.py)。
+    ``pattern="parallel"``: legacy protocol, aligned codes fed directly.
+    ``pattern="delay"``: MusicGen-native delayed interleaving for teacher
+    forcing; logits re-aligned to audio frames (see lib/repro/musicgen_pattern.py).
     Empty/short chunks return an empty ``(K, 0)`` array.
     """
     with torch.no_grad():
