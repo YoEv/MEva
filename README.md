@@ -1,7 +1,7 @@
 # MEva — Automatic Music Evaluation with Model-Intrinsic Signals
 
 Code and demo for the ISMIR 2026 paper
-**“Do Music Generative Models Understand Musicality? Automatic Music Evaluation with Model-Intrinsic Signals”**
+**“Do Music Generative Models Understand Musical Qualities? Automatic Music Evaluation with Model-Intrinsic Signals”**
 (Xiaosha Li, Chun Liu, Ziyu Wang).
 
 - 📄 Paper: [`docs/assets/paper.pdf`](docs/assets/paper.pdf)
@@ -64,7 +64,7 @@ per-benchmark / pooled checkpoints are released on Hugging Face.
 
 ```bibtex
 @inproceedings{li2026meva,
-  title     = {Do Music Generative Models Understand Musicality? Automatic Music Evaluation with Model-Intrinsic Signals},
+  title     = {Do Music Generative Models Understand Musical Qualities? Automatic Music Evaluation with Model-Intrinsic Signals},
   author    = {Li, Xiaosha and Liu, Chun and Wang, Ziyu},
   booktitle = {Proc. of the 27th Int. Society for Music Information Retrieval Conf. (ISMIR)},
   year      = {2026}
