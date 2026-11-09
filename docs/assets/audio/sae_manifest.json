@@ -14,8 +14,21 @@
   "g2": {
     "latent": "207",
     "rho": 0.4893081784248352,
-    "files": [],
-    "review_status": "under_review"
+    "files": [
+      {
+        "mp3": "g2_feature207_reviewed.mp3",
+        "src": "audiomos2025-track1-S003_P010.wav",
+        "source_start_s": 14.94,
+        "duration_s": 2.0,
+        "source_window": "clip02_w1_t0014.94s.wav"
+      }
+    ],
+    "review_status": "reviewed_representative",
+    "review_caveat": "",
+    "review_model": "google/gemini-3.1-pro-preview",
+    "reviewed_excerpt_caption": "Excerpt review (Gemini 3.1 Pro): The excerpt features acoustic guitar strumming followed by the entrance of a solo male vocal.",
+    "review_details_url": "sae-review-20261108.html#g2",
+    "human_note_verbatim": "folk guitar-texture sound"
   },
   "g5": {
     "latent": "3758",
@@ -80,8 +93,21 @@
   "mp1": {
     "latent": "1004",
     "rho": 0.0012708761496469378,
-    "files": [],
-    "review_status": "under_review"
+    "files": [
+      {
+        "mp3": "mp1_feature1004_reviewed.mp3",
+        "src": "audiomos2025-track1-S015_P060.wav",
+        "source_start_s": 25.98,
+        "duration_s": 2.0,
+        "source_window": "clip02_w1_t0025.98s.wav"
+      }
+    ],
+    "review_status": "reviewed_representative",
+    "review_caveat": "",
+    "review_model": "google/gemini-3.1-pro-preview",
+    "reviewed_excerpt_caption": "Excerpt review (Gemini 3.1 Pro): This very short excerpt features a clear female solo vocal supported by a steady percussive beat and a mid-range harmonic accompaniment.",
+    "review_details_url": "sae-review-20261108.html#mp1",
+    "human_note_verbatim": "vocal, pop, instrumental, with clear melody and accompany"
   },
   "mm1": {
     "latent": "3628",
@@ -152,8 +178,21 @@
   "b4": {
     "latent": "1533",
     "rho": -0.48326966166496277,
-    "files": [],
-    "review_status": "under_review"
+    "files": [
+      {
+        "mp3": "b4_feature1533_reviewed.mp3",
+        "src": "audiomos2025-track1-S026_P026.wav",
+        "source_start_s": 1.34,
+        "duration_s": 2.0,
+        "source_window": "clip02_r2_t001.34s.wav"
+      }
+    ],
+    "review_status": "partial_match",
+    "review_caveat": "Percussion-only partial candidate: noisy percussion is present, but the vocal is clear; the poor-vocal-quality claim is not supported.",
+    "review_model": "google/gemini-3.1-pro-preview",
+    "reviewed_excerpt_caption": "Excerpt review (Gemini 3.1 Pro): This two-second excerpt features heavy percussion, distorted chordal textures, and an energetic vocal shout.",
+    "review_details_url": "sae-review-20261108.html#b4",
+    "human_note_verbatim": "bad quality vocal, noisy purcussion"
   },
   "b3": {
     "latent": null,
