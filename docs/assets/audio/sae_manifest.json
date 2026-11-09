@@ -4,13 +4,20 @@
     "rho": 0.5366973876953125,
     "files": [
       {
-        "mp3": "g1_a.mp3",
-        "rating": "2.1",
-        "src": "audiomos2025-track1-S026_P026.wav"
+        "mp3": "g1_feature2251_selected_v2.mp3",
+        "src": "audiomos2025-track1-S014_P007.wav",
+        "source_start_s": 23.18,
+        "duration_s": 2.0,
+        "source_window": "clip02_r2_t023.18s.wav",
+        "display_label": ""
       }
     ],
-    "review_status": "reviewed_representative",
-    "show_review_label": false
+    "review_status": "user_selected",
+    "show_review_label": false,
+    "audio_count": 1,
+    "review_caveat": "",
+    "review_model": "google/gemini-3.1-pro-preview",
+    "reviewed_excerpt_caption": "This two-second excerpt features a classical-style orchestral passage driven by bowed strings and wind instruments."
   },
   "g2": {
     "latent": "207",
@@ -36,13 +43,28 @@
     "rho": 0.4502967298030853,
     "files": [
       {
-        "mp3": "g5_a.mp3",
-        "rating": "4.3",
-        "src": "audiomos2025-track1-S015_P085.wav"
+        "mp3": "g5_feature3758_choir_v2.mp3",
+        "src": "audiomos2025-track1-S015_P085.wav",
+        "source_start_s": 24.46,
+        "duration_s": 2.0,
+        "source_window": "clip00_r2_t024.46s.wav",
+        "display_label": "Choir"
+      },
+      {
+        "mp3": "g5_feature3758_plucked_v2.mp3",
+        "src": "audiomos2025-track1-S011_P080.wav",
+        "source_start_s": 5.82,
+        "duration_s": 2.0,
+        "source_window": "clip02_r2_t005.82s.wav",
+        "display_label": "Polyphonic plucked folk instrument"
       }
     ],
-    "review_status": "partial_match",
-    "show_review_label": false
+    "review_status": "user_selected",
+    "show_review_label": false,
+    "audio_count": 2,
+    "review_caveat": "",
+    "review_model": "google/gemini-3.1-pro-preview",
+    "reviewed_excerpt_caption": "This very short excerpt features a sustained male choir harmony followed by a solo female vocal phrase. This very short excerpt features a traditional Chinese instrumental ensemble with a bowed string melody, plucked string accompaniment, and light percussion."
   },
   "g7": {
     "latent": "1093",
@@ -133,13 +155,20 @@
     "rho": -0.0024982739705592394,
     "files": [
       {
-        "mp3": "mm3_b.mp3",
-        "rating": "3.7",
-        "src": "audiomos2025-track1-S032_P054.wav"
+        "mp3": "mm3_feature3474_selected_v2.mp3",
+        "src": "audiomos2025-track1-S019_P059.wav",
+        "source_start_s": 3.54,
+        "duration_s": 2.0,
+        "source_window": "clip00_w0_t0003.54s.wav",
+        "display_label": ""
       }
     ],
-    "review_status": "partial_match",
-    "show_review_label": false
+    "review_status": "user_selected",
+    "show_review_label": false,
+    "audio_count": 1,
+    "review_caveat": "",
+    "review_model": "google/gemini-3.1-pro-preview",
+    "reviewed_excerpt_caption": "The excerpt features a highly distorted, glitchy electronic rhythmic pattern without any discernible vocals or melody."
   },
   "b9": {
     "latent": "3860",
