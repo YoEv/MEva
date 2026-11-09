@@ -150,72 +150,67 @@
 
 <section id="sae">
   <h2>SAE Latents: Good vs. Bad vs. Neutral Concepts</h2>
-  <p>Ranking SAE latents by rating-aligned gradient attribution ρ<sub>k</sub> yields cleanly separable
-     detectors. For each latent: the blind Gemini-2.5-Flash caption (genre, mood — instruments, tempo,
-     aggregated over its top clips), the producer's verdict after listening, and the top-activating
-     2-s windows from two different clips. On the good side both agree on conventional musical content;
-     on the bad side the VLM still issues clean genre labels while the producer reaches for
-     distortion terms.</p>
+  <p>One representative 2-s excerpt is shown per reviewed latent. The producer notes are historical listening annotations; partial matches are marked, and excerpts under review are withheld. Good, bad, and near-null refer to attribution–rating correlation, not the quality of every excerpt. The gray model captions are historical summaries aggregated across several clips, rather than verified descriptions of the single excerpt shown here.</p>
   <div class="ghead">good-aligned (ρ<sub>k</sub> &gt; 0)</div>
   <div class="srow">
   <div class="scell rank">g-1 <span class="lid">#2251</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:42px"></span></span><span class="rval">+0.54</span></div>
   <div class="scell lab"><div class="vlm">classical, melancholic — strings, piano (60 bpm)</div><div class="prod">string classical</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g1_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g1_a.mp3"></audio></div>
 </div><div class="srow">
   <div class="scell rank">g-2 <span class="lid">#207</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:38px"></span></span><span class="rval">+0.49</span></div>
   <div class="scell lab"><div class="vlm">folk, upbeat — accordion, percussion, acoustic guitar (125 bpm)</div><div class="prod">folk guitar-texture sound</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g2_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g2_b.mp3"></audio></div>
+  <div class="scell aud"><span class="silence">Excerpt under review — previous clips did not sufficiently match the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">g-5 <span class="lid">#3758</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:35px"></span></span><span class="rval">+0.45</span></div>
   <div class="scell lab"><div class="vlm">folk, calm — flute, female vocals, choir (80 bpm)</div><div class="prod">choir + polyphonic plucked folk instrument</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g5_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g5_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g5_a.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">g-7 <span class="lid">#1093</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:34px"></span></span><span class="rval">+0.44</span></div>
   <div class="scell lab"><div class="vlm">folk, melancholic — flute, female vocals, strings (75 bpm)</div><div class="prod">flute-texture sound</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g7_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g7_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g7_a.mp3"></audio></div>
 </div><div class="srow">
   <div class="scell rank">g-9 <span class="lid">#3745</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:33px"></span></span><span class="rval">+0.43</span></div>
   <div class="scell lab"><div class="vlm">ambient, calm — synthesizer, strings, piano (80 bpm)</div><div class="prod">ambient sounds, ambient-texture vocal</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g9_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g9_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g9_a.mp3"></audio></div>
 </div><div class="srow">
   <div class="scell rank">g-10 <span class="lid">#282</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:33px"></span></span><span class="rval">+0.43</span></div>
   <div class="scell lab"><div class="vlm">pop, upbeat — drums, synthesizer, piano (124 bpm)</div><div class="prod">clear pop with vocal and beat</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g10_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/g10_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/g10_b.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div>
   <div class="ghead">near-null (|ρ<sub>k</sub>| &lt; 0.01)</div>
   <div class="srow">
   <div class="scell rank">m+3 <span class="lid">#3308</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:0px"></span></span><span class="rval">+0.005</span></div>
   <div class="scell lab"><div class="vlm">rock, energetic — drums, electric guitar, bass (135 bpm)</div><div class="prod">loud rock, high long single note</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mp3_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mp3_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mp3_a.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">m+1 <span class="lid">#1004</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill pos" style="width:0px"></span></span><span class="rval">+0.001</span></div>
   <div class="scell lab"><div class="vlm">pop, energetic — drums, synthesizer, bass (124 bpm)</div><div class="prod">vocal pop, clear melody + accompaniment</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mp1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mp1_b.mp3"></audio></div>
+  <div class="scell aud"><span class="silence">Excerpt under review — previous clips did not sufficiently match the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">m−1 <span class="lid">#3628</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:0px"></span></span><span class="rval">−0.000</span></div>
   <div class="scell lab"><div class="vlm">classical, melancholic — drums, synthesizer, strings (120 bpm)</div><div class="prod">random harsh sound, bad groove</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mm1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mm1_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mm1_a.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">m−3 <span class="lid">#3474</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:0px"></span></span><span class="rval">−0.002</span></div>
   <div class="scell lab"><div class="vlm">hip-hop, energetic — synthesizer, percussion, drum machine (140 bpm)</div><div class="prod">bad groove, noise, loud rock</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mm3_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/mm3_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/mm3_b.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div>
   <div class="ghead">bad-aligned (ρ<sub>k</sub> &lt; 0)</div>
   <div class="srow">
   <div class="scell rank">b-9 <span class="lid">#3860</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:33px"></span></span><span class="rval">−0.43</span></div>
   <div class="scell lab"><div class="vlm">classical, playful — piano, percussion, strings (110 bpm)</div><div class="prod">mostly dissonant, very wide range (one harp moment sounds fine, range still too wide)</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b9_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b9_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b9_a.mp3"></audio></div>
 </div><div class="srow">
   <div class="scell rank">b-8 </div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:35px"></span></span><span class="rval">−0.45</span></div>
@@ -225,17 +220,17 @@
   <div class="scell rank">b-7 <span class="lid">#3695</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:35px"></span></span><span class="rval">−0.46</span></div>
   <div class="scell lab"><div class="vlm">classical, melancholic — strings, speech, violin (100 bpm)</div><div class="prod">violin-texture but highly dissonant</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b7_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b7_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b7_a.mp3"></audio></div>
 </div><div class="srow">
   <div class="scell rank">b-5 <span class="lid">#1743</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:36px"></span></span><span class="rval">−0.47</span></div>
   <div class="scell lab"><div class="vlm">hip-hop, tense — synthesizer, drums, bass (140 bpm)</div><div class="prod">random percussion, harsh ambient, random high-freq sound</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b5_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b5_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b5_a.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">b-4 <span class="lid">#1533</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:37px"></span></span><span class="rval">−0.48</span></div>
   <div class="scell lab"><div class="vlm">pop, upbeat — vocals, drums, piano (122 bpm)</div><div class="prod">bad-quality vocal, noisy percussion</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b4_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b4_b.mp3"></audio></div>
+  <div class="scell aud"><span class="silence">Excerpt under review — previous clips did not sufficiently match the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">b-3 </div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:37px"></span></span><span class="rval">−0.48</span></div>
@@ -245,12 +240,12 @@
   <div class="scell rank">b-2 <span class="lid">#1724</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:46px"></span></span><span class="rval">−0.60</span></div>
   <div class="scell lab"><div class="vlm">rock, energetic — drums, electric guitar, bass (140 bpm)</div><div class="prod">big noise, random trumpet</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b2_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b2_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b2_b.mp3"></audio><span class="silence">Partial match to the listening note.</span></div>
 </div><div class="srow">
   <div class="scell rank">b-1 <span class="lid">#1398</span></div>
   <div class="scell rho"><span class="rbar"><span class="rfill neg" style="width:47px"></span></span><span class="rval">−0.61</span></div>
   <div class="scell lab"><div class="vlm">classical, calm — synthesizer, drums, piano (120 bpm)</div><div class="prod">random high-freq noise, not a structured ensemble</div></div>
-  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b1_a.mp3"></audio><audio controls preload="none" src="assets/audio/sae/b1_b.mp3"></audio></div>
+  <div class="scell aud"><audio controls preload="none" src="assets/audio/sae/b1_b.mp3"></audio></div>
 </div>
 </section>
 
